@@ -1,6 +1,5 @@
 #include <SDL.h>
 #include <stdio.h>
-#include <vector>
 #include <algorithm>
 #include "Game.h"
 #include "GameEntity.h"
@@ -48,9 +47,11 @@ bool Game::Initialize()
 void Game::Close()
 {
     // Clean up our entities
-    for( std::size_t i = 0; i < m_listEntities.size(); i++ )
+    for(auto pEntity : m_listEntities)
     {
-        delete m_listEntities[i];
+        // Just delete the memory for each game entity, the list will clean itself
+        //  up when it goes out of scope
+        delete pEntity;
     }
 
     // Destroy window
@@ -67,11 +68,8 @@ void Game::Close()
 void Game::UpdateGame()
 {
     // Loop through list of entities and tell each one to update itself
-    for( std::size_t i = 0; i < m_listEntities.size(); i++ )
+    for(auto pEntity : m_listEntities)
     {
-        // Get the entity at each index in the loop
-        GameEntity* pEntity = m_listEntities[i];
-
         // Check for "dead" entities
         if (pEntity->IsAlive())
         {
@@ -80,7 +78,7 @@ void Game::UpdateGame()
         else
         {
             // Remove the "dead" element from the list
-            m_listEntities.erase(m_listEntities.begin() + i);
+            m_listEntities.remove(pEntity);
 
             // Clean up the memory
             delete pEntity;
@@ -96,11 +94,10 @@ void Game::RenderGame()
     // Clear the surface
     SDL_FillRect(m_pMainScreenSurface, NULL, 0x000000);
 
-    // Loop through list of entities and tell each one to render itself
-    for( std::size_t i = 0; i < m_listEntities.size(); i++ )
+    // Loop through list of game entities and render each one
+    for(auto pEntity : m_listEntities)
     {
-        // Render each entity
-        m_listEntities[i]->Render(m_pMainScreenSurface);
+        pEntity->Render(m_pMainScreenSurface);;
     }
 
     // Update the surface

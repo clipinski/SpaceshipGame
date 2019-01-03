@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include <SDL.h>
-#include <vector>
+#include <list>
 
 // Forward Delcarations
 class GameEntity;
@@ -28,7 +28,7 @@ private:
     SDL_Surface* m_pMainScreenSurface = NULL;
 
     // List of game entities
-    std::vector<GameEntity*> m_listEntities;
+    std::list<GameEntity*> m_listEntities;
 
 protected:
     //************************************************************************
