@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "GameEntity.h"
+#include "AnimImage.h"
 
 // Forward declaration of Game
 class Game;
@@ -13,17 +14,17 @@ class Game;
 class PlayerShip : public GameEntity
 {
 protected:
-
-    // Behavior Defines
-    const double m_fTurnRate = 2.0;
-    const unsigned int m_nBulletFireRate = 500;
-    const double m_fDefaultBulletVelocity = 2.0;
+    // Ship image
+    const char * SHIP_IMAGE_PATH = "gfx/00ShipFrames1.bmp";
+    const int SHIP_IMAGE_WIDTH = 63;
+    const int SHIP_IMAGE_HEIGHT = 63;
+    const int SHIP_IMAGE_NUM_FRAMES= 72;
 
     // Control bullet fire speed
     unsigned int m_nLastBulletFireTime = 0;
 
     // Surface loaded with ship image
-    SDL_Surface* m_pShipImage = NULL;
+    AnimImage* m_pShipImage = NULL;
 
 public:
 

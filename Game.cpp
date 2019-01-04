@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <algorithm>
 #include "Game.h"
+#include "GameConfig.h"
 #include "GameEntity.h"
 #include "PlayerShip.h"
 
@@ -22,7 +23,7 @@ bool Game::Initialize()
     else
     {
         // Create window
-        m_pMainWindow = SDL_CreateWindow( "Space Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, m_windowWidth, m_windowHeight, SDL_WINDOW_SHOWN );
+        m_pMainWindow = SDL_CreateWindow( "Space Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, GameConfig::Game::WINDOW_WIDTH, GameConfig::Game::WINDOW_HEIGHT, SDL_WINDOW_SHOWN );
         if( m_pMainWindow == NULL )
         {
             printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
@@ -35,7 +36,7 @@ bool Game::Initialize()
         }
 
         // Create our entities
-        this->AddEntity(new PlayerShip(this, m_windowWidth/2, m_windowHeight/2));
+        AddEntity(new PlayerShip(this, GetWindowWidth() / 2, GetWindowHeight() / 2));
     }
 
     return success;
@@ -109,7 +110,7 @@ void Game::RenderGame()
 //////////////////////////////////////////////////////////////////////////
 int Game::GetWindowWidth()
 {
-    return m_windowWidth;
+    return GameConfig::Game::WINDOW_WIDTH;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -117,7 +118,7 @@ int Game::GetWindowWidth()
 //////////////////////////////////////////////////////////////////////////
 int Game::GetWindowHeight()
 {
-    return m_windowHeight;
+    return GameConfig::Game::WINDOW_HEIGHT;
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -2,6 +2,7 @@
 // PlayerShip Class Implementation
 //////////////////////////////////////////////////////////////////////////////
 #include "Game.h"
+#include "GameConfig.h"
 #include "PlayerShip.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -9,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 PlayerShip::PlayerShip(Game* pGame, int x, int y) : GameEntity(pGame, x, y)
 {
-    m_pShipImage = SDL_LoadBMP("gfx/00ShipFrames1.bmp");
+    m_pShipImage = new AnimImage(SHIP_IMAGE_PATH, SHIP_IMAGE_NUM_FRAMES, SHIP_IMAGE_WIDTH, SHIP_IMAGE_HEIGHT);
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -17,7 +18,10 @@ PlayerShip::PlayerShip(Game* pGame, int x, int y) : GameEntity(pGame, x, y)
 //////////////////////////////////////////////////////////////////////////
 PlayerShip::~PlayerShip()
 {
-    SDL_FreeSurface(m_pShipImage);
+    if (m_pShipImage)
+    {
+        delete m_pShipImage;
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -25,30 +29,39 @@ PlayerShip::~PlayerShip()
 //////////////////////////////////////////////////////////////////////////
 /*virtual*/ void PlayerShip::Update()
 {
+    // Query the current state of the keyboard
     const Uint8* stateArray = SDL_GetKeyboardState(NULL);
-    if (stateArray[SDL_SCANCODE_LEFT] == 1) 
+
+    // Check Turn Left Key
+    if (stateArray[GameConfig::Controls::TURN_LEFT] == 1) 
     {
-        m_rotationAngle -= m_fTurnRate;
+        m_rotationAngle -= GameConfig::PlayerShip::TURN_RATE;
         if ( m_rotationAngle < 0.0 )
         {
             m_rotationAngle = m_rotationAngle + 360.0;
         }
     }
-    if (stateArray[SDL_SCANCODE_RIGHT] == 1)
+
+    // Check Turn Right Key
+    if (stateArray[GameConfig::Controls::TURN_RIGHT] == 1)
     {
-        m_rotationAngle += m_fTurnRate;
+        m_rotationAngle += GameConfig::PlayerShip::TURN_RATE;
         if ( m_rotationAngle > 360.0 )
         {
             m_rotationAngle = m_rotationAngle - 360.0;
         } 
     }
-    if (stateArray[SDL_SCANCODE_UP] == 1)
+
+    // Check Forward Thrust Key
+    if (stateArray[GameConfig::Controls::FORWARD_THRUST] == 1)
     {
-        m_velocity += .05;
+        m_velocity += GameConfig::PlayerShip::FORWARD_THRUST_AMT;
     }
-    if (stateArray[SDL_SCANCODE_DOWN] == 1)
+
+    // Check Reverse Thrust Key
+    if (stateArray[GameConfig::Controls::REVERSE_THRUST] == 1)
     {
-        m_velocity -= .05;
+        m_velocity -= GameConfig::PlayerShip::REVERSE_THRUST_AMT;
     }
    
     // Call base class to update position
@@ -62,14 +75,17 @@ PlayerShip::~PlayerShip()
 {
     // Calculate what row and col in the image we will display based on
     //  the rotation of the ship
-    int nFrame = (m_rotationAngle / 5.0);
-    int nRow = nFrame / 9;
-    int nCol = nFrame % 9;
+    int nFrame = (m_rotationAngle / (360.0 / (double)SHIP_IMAGE_NUM_FRAMES));
 
-    // Create the src and destination rectangles for the bitblt
-    SDL_Rect srcrect = { nCol * 63, nRow * 63, 63, 63 };
-    SDL_Rect dstrect = { m_X - ( 63 / 2 ) - 1, m_Y - ( 63 / 2 ) - 1, 63, 63 };
+    // NOTE: We only have 1 "point right" frame, so if we wrap around 360 degrees, just
+    //  pass in frame 0
+    if (nFrame == 72)
+    {
+        nFrame = 0;
+    }
 
-    // Copy ship image to the screen
-    SDL_BlitSurface( m_pShipImage, &srcrect, pSurface, &dstrect );
+    // Copy the correct frame to the screen
+    // NOTE: We want the X and Y to be in the center of the ship, so
+    //   we will adjust by half the size of the image
+    m_pShipImage->BltFrame(nFrame, m_X - ( SHIP_IMAGE_WIDTH / 2 ), m_Y - ( SHIP_IMAGE_HEIGHT / 2 ), pSurface);
 }

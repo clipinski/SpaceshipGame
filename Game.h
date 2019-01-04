@@ -13,11 +13,6 @@ class GameEntity;
 class Game
 {
 private:
-
-    // Window Size
-    const int m_windowWidth = 1280;
-    const int m_windowHeight = 720;
-
     // Framerate timing - want to Run at about 60 fps
     const unsigned int desiredFrameTime = 1000 / 60;
 
