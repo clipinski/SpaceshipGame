@@ -15,16 +15,27 @@ class PlayerShip : public GameEntity
 {
 protected:
     // Ship image
-    const char * SHIP_IMAGE_PATH = "gfx/00ShipFrames1.bmp";
     const int SHIP_IMAGE_WIDTH = 63;
     const int SHIP_IMAGE_HEIGHT = 63;
     const int SHIP_IMAGE_NUM_FRAMES= 72;
 
+    // Values for specific ship movement style
+    double m_velocityX;
+    double m_velocityY;
+
     // Control bullet fire speed
-    unsigned int m_nLastBulletFireTime = 0;
+    unsigned int m_nLastBulletFireTime;
+
+    // Used for displaying engines animation
+    bool m_bEnginesOn;
+    unsigned int m_nEnginesOnFrameCounter;
 
     // Surface loaded with ship image
-    AnimImage* m_pShipImage = NULL;
+    AnimImage* m_pShipImage;
+    AnimImage* m_pShipImagesThrusting[3];
+
+    // Internal Helpers
+    void HandleUserInput();
 
 public:
 

@@ -16,16 +16,18 @@ GameEntity::GameEntity(Game* pGame, int x, int y)
 }
 
 //////////////////////////////////////////////////////////////////////////////
-// Update
+// GetRotationAngleInRads
 //////////////////////////////////////////////////////////////////////////////
-/*virtual*/ void GameEntity::Update()
+double GameEntity::GetRotationAngleInRads()
 {
-    // Update x and y positions based on the current velocity and rotation angle
-    double fAngleInRads = m_rotationAngle * M_PI / 180.0;
-    m_X = m_X + (m_velocity * cos(fAngleInRads));
-    m_Y = m_Y + (m_velocity * sin(fAngleInRads));
+    return m_rotationAngle * M_PI / 180.0;
+}
 
-    // Wraparound Code
+//////////////////////////////////////////////////////////////////////////////
+// HandleWrapAround
+//////////////////////////////////////////////////////////////////////////////
+void GameEntity::HandleWrapAround()
+{
     if (m_X > m_pGame->GetWindowWidth())
     {
         m_X = 0;
@@ -42,6 +44,21 @@ GameEntity::GameEntity(Game* pGame, int x, int y)
     {
         m_Y = m_pGame->GetWindowHeight();
     }
+}
+
+//////////////////////////////////////////////////////////////////////////////
+// Update
+//////////////////////////////////////////////////////////////////////////////
+/*virtual*/ void GameEntity::Update()
+{
+    // Default Movement Behaviour:
+    //      Update x and y positions based on the current velocity 
+    //      and rotation angle.
+    m_X = m_X + (m_velocity * cos(GetRotationAngleInRads()));
+    m_Y = m_Y + (m_velocity * sin(GetRotationAngleInRads()));
+
+    // By Default, make all entities "wrap around" the screen
+    HandleWrapAround();
 }
 
 //////////////////////////////////////////////////////////////////////////////

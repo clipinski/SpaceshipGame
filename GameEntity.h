@@ -28,6 +28,10 @@ protected:
     double m_velocity;
     double m_rotationAngle;  // In Degrees
 
+    // Internal Helpers
+    double GetRotationAngleInRads();
+    void HandleWrapAround();
+
 public:
 
     // Main interface

@@ -20,10 +20,11 @@ namespace GameConfig
     // Game Controls
     namespace Controls
     {
-        const int TURN_LEFT      = SDL_SCANCODE_LEFT;
-        const int TURN_RIGHT     = SDL_SCANCODE_RIGHT;
-        const int FORWARD_THRUST = SDL_SCANCODE_UP;
-        const int REVERSE_THRUST = SDL_SCANCODE_DOWN;
+        const int TURN_LEFT      = SDL_SCANCODE_A;
+        const int TURN_RIGHT     = SDL_SCANCODE_S;
+        const int FORWARD_THRUST = SDL_SCANCODE_SEMICOLON;
+        const int REVERSE_THRUST = SDL_SCANCODE_SPACE;
+        const int FIRE           = SDL_SCANCODE_APOSTROPHE;
     }
 
     // Player Ship Configuration
@@ -34,6 +35,7 @@ namespace GameConfig
         const double       BULLET_VELOCITY = 2.0;
         const double       FORWARD_THRUST_AMT = .05;
         const double       REVERSE_THRUST_AMT = .05;
+        const int          ENGINES_ON_ANIMATION_FRAMES = 2;
     }
 }
 
