@@ -200,7 +200,11 @@ int Game::Run()
             }
         }
 
-        // Timing Control
+        // Timing Control - This is how we ensure the game runs at the desired frame rate or frames per second (FPS)
+        //                  We save the current time, update and render the game, then we will wait to update
+        //                    and render the game again until the desired amount of time has passed.
+        //                  For example, to run at 60 FPS, a frame should be rendered once every 1000 ms/60 frames or
+        //                    every 16.6 (rounded to 17) milliseconds.
         unsigned int currentTime = SDL_GetTicks();
         if (currentTime - lastTime > desiredFrameTime) 
         {
