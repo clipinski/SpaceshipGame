@@ -64,6 +64,7 @@ public:
     bool IsAlive();
     void Kill();
     GameEntity(Game* pGame, int x, int y);
+    virtual ~GameEntity() = default;
 
 };
 
