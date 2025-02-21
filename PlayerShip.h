@@ -65,9 +65,9 @@ public:
 
     // Public Interface
     PlayerShip(Game* pGame, int x, int y);
-    ~PlayerShip();
-    virtual void Update();
-    virtual void Render(SDL_Surface* pSurface);
+    virtual ~PlayerShip() override;
+    virtual void Update() override;
+    virtual void Render(SDL_Surface* pSurface) override;
 };
 
 #endif
