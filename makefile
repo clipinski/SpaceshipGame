@@ -1,29 +1,36 @@
-#OBJS specifies which files to compile as part of the project
-OBJS = main.cpp Game.cpp GameEntity.cpp AnimImage.cpp PlayerShip.cpp
+# Compiler settings
+CXX = clang++
+CXXFLAGS = -Wall -Wextra -std=c++11 -g
+# SDL2 flags using pkg-config (includes both compile and link flags)
+SDL_FLAGS = $(shell sdl2-config --cflags --libs)
+# Additional SDL2 libraries
+SDL_LIBS = -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
-#CC specifies which compiler we're using
-CC = g++
+# Output executable name
+TARGET = SpaceshipGame
 
-#INCLUDE_PATHS specifies the additional include paths we'll need
-INCLUDE_PATHS = -IC:\SDL2-2.0.9\i686-w64-mingw32\include\SDL2
+# Source files (automatically find all .cpp files)
+SRCS = $(wildcard *.cpp)
+OBJS = $(SRCS:.cpp=.o)
 
-#LIBRARY_PATHS specifies the additional library paths we'll need
-LIBRARY_PATHS = -LC:\SDL2-2.0.9\i686-w64-mingw32\lib
+# Default target
+all: $(TARGET)
 
-#COMPILER_FLAGS specifies the additional compilation options we're using
-# -w suppresses all warnings
-# -Wl,-subsystem,windows gets rid of the console window
-COMPILER_FLAGS = -w -Wl,-subsystem,windows
+# Link object files to create executable
+$(TARGET): $(OBJS)
+	$(CXX) $(OBJS) -o $(TARGET) $(SDL_FLAGS) $(SDL_LIBS)
 
-#LINKER_FLAGS specifies the libraries we're linking against
-LINKER_FLAGS = -lmingw32 -lSDL2main -lSDL2
+# Compile source files to object files
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) $(shell sdl2-config --cflags) -c $< -o $@
 
-#OBJ_NAME specifies the name of our exectuable
-OBJ_NAME = SpaceGame
+# Clean build files
+clean:
+	rm -f $(OBJS) $(TARGET)
 
-#This is the target that compiles our executable
-all : $(OBJS)
-	$(CC) $(OBJS) $(INCLUDE_PATHS) $(LIBRARY_PATHS) $(COMPILER_FLAGS) $(LINKER_FLAGS) -o $(OBJ_NAME)
+# Run the game
+run: $(TARGET)
+	./$(TARGET)
 
-run :
-	$(OBJ_NAME).exe
+# Phony targets
+.PHONY: all clean run
