@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2019, 2025 Craig J. Lipinski
+// Copyright (c) 2025 Craig J. Lipinski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -22,45 +22,43 @@
 // SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef GAME_CONFIG_H
-#define GAME_CONFIG_H
+#ifndef STARFIELD_H
+#define STARFIELD_H
 
 #include <SDL.h>
+#include <vector>
+
+// Forward declaration of Game
+class Game;
 
 //////////////////////////////////////////////////////////////////////////////
-// GameConfig
+// Starfield Class
 //
-// This file contains settings used to tweak the game.
+// Creates a static starfield background with twinkling stars
 //////////////////////////////////////////////////////////////////////////////
-namespace GameConfig
+class Starfield
 {
-    // Main Game Configuration
-    namespace Game
-    {
-        const int WINDOW_WIDTH = 1280;
-        const int WINDOW_HEIGHT = 720;
-    }
+private:
+    struct Star {
+        float x, y;           // Position
+        uint8_t baseBrightness;   // Base brightness level (0-255)
+        float twinkleSpeed;       // How fast the star twinkles
+        float twinklePhase;       // Current phase in twinkle animation (0-2π)
+        float twinkleAmount;      // How much the star twinkles (0-1)
+    };
 
-    // Game Controls
-    namespace Controls
-    {
-        const int TURN_LEFT      = SDL_SCANCODE_A;
-        const int TURN_RIGHT     = SDL_SCANCODE_S;
-        const int FORWARD_THRUST = SDL_SCANCODE_SEMICOLON;
-        const int REVERSE_THRUST = SDL_SCANCODE_SPACE;
-        const int FIRE           = SDL_SCANCODE_APOSTROPHE;
-    }
+    static const int NUM_STARS = 200;
+    std::vector<Star> m_stars;
+    Game* m_pGame;
 
-    // Player Ship Configuration
-    namespace PlayerShip
-    {
-        const double       TURN_RATE = 2.0;
-        const unsigned int BULLET_FIRE_RATE = 500;
-        const double       BULLET_VELOCITY = 2.0;
-        const double       FORWARD_THRUST_AMT = .05;
-        const double       REVERSE_THRUST_AMT = .05;
-        const int          ENGINES_ON_ANIMATION_FRAMES = 2;
-    }
-}
+    void ResetStar(Star& star);
 
-#endif
+public:
+    Starfield(Game* pGame);
+    ~Starfield();
+
+    void Update(float deltaTime);
+    void Render(SDL_Surface* pSurface);
+};
+
+#endif // STARFIELD_H 

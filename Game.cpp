@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2019 Craig J. Lipinski
+// Copyright (c) 2019, 2025 Craig J. Lipinski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,7 @@
 #include "GameConfig.h"
 #include "GameEntity.h"
 #include "PlayerShip.h"
+#include "Starfield.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Initialize
@@ -59,6 +60,9 @@ bool Game::Initialize()
             m_pMainScreenSurface = SDL_GetWindowSurface( m_pMainWindow );
         }
 
+        // Create starfield background
+        m_pStarfield = new Starfield(this);
+
         // Create our entities
         AddEntity(new PlayerShip(this, GetWindowWidth() / 2, GetWindowHeight() / 2));
     }
@@ -79,6 +83,13 @@ void Game::Close()
         delete pEntity;
     }
 
+    // Clean up starfield
+    if (m_pStarfield)
+    {
+        delete m_pStarfield;
+        m_pStarfield = NULL;
+    }
+
     // Destroy window
     SDL_DestroyWindow( m_pMainWindow );
     m_pMainWindow = NULL;
@@ -92,6 +103,12 @@ void Game::Close()
 //////////////////////////////////////////////////////////////////////////
 void Game::UpdateGame()
 {
+    // Update starfield
+    if (m_pStarfield)
+    {
+        m_pStarfield->Update(1.0f / 60.0f);  // Fixed timestep for now
+    }
+
     // Loop through list of entities and tell each one to update itself
     for(auto pEntity : m_listEntities)
     {
@@ -118,6 +135,12 @@ void Game::RenderGame()
 {
     // Clear the surface
     SDL_FillRect(m_pMainScreenSurface, NULL, 0x000000);
+
+    // Render starfield first (as background)
+    if (m_pStarfield)
+    {
+        m_pStarfield->Render(m_pMainScreenSurface);
+    }
 
     // Loop through list of game entities and render each one
     for(auto pEntity : m_listEntities)

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2019 Craig J. Lipinski
+// Copyright (c) 2019, 2025 Craig J. Lipinski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -30,6 +30,7 @@
 
 // Forward Delcarations
 class GameEntity;
+class Starfield;
 
 //////////////////////////////////////////////////////////////////////////////
 // Game Class
@@ -48,6 +49,9 @@ private:
 
     // List of game entities
     std::list<GameEntity*> m_listEntities;
+
+    // Starfield background
+    Starfield* m_pStarfield = NULL;
 
 protected:
     //************************************************************************

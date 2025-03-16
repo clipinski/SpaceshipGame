@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////
 // MIT License
 //
-// Copyright (c) 2019 Craig J. Lipinski
+// Copyright (c) 2019, 2025 Craig J. Lipinski
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -40,6 +40,9 @@ AnimImage::AnimImage(const char* szImageFileName, int numFrames, int frameHeight
     // If we loaded the image correctly
     if (m_pImage)
     {
+        // Set black as the transparent color (RGB: 0,0,0)
+        SDL_SetColorKey(m_pImage, SDL_TRUE, SDL_MapRGB(m_pImage->format, 0, 0, 0));
+
         // Calculate rows and colums
         m_nNumCols = m_pImage->w / frameWidth;
         m_nNumRows = m_pImage->h / frameHeight;
