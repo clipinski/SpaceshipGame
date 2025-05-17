@@ -17,8 +17,9 @@ These installation instructions are specifically for macOS users. For other oper
 - Homebrew package manager (for installing SDL2 libraries)
 
 If you don't have Homebrew installed, install it first:
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-
+```
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
 ---
 
 ## Prerequisites for Linux/Ubuntu
