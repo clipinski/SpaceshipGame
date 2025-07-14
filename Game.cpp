@@ -110,20 +110,19 @@ void Game::UpdateGame()
     }
 
     // Loop through list of entities and tell each one to update itself
-    for(auto pEntity : m_listEntities)
-    {
+    auto it = m_listEntities.begin();
+    while (it != m_listEntities.end()) {
         // Check for "dead" entities
-        if (pEntity->IsAlive())
-        {
-            pEntity->Update();
-        }
-        else
-        {
-            // Remove the "dead" element from the list
-            m_listEntities.remove(pEntity);
-
+        if ((*it)->IsAlive()) {
+            (*it)->Update();
+            ++it;
+        } else {
             // Clean up the memory
-            delete pEntity;
+            delete *it;
+            
+            // Remove the "dead" element from the list
+            // erase() returns iterator to next element
+            it = m_listEntities.erase(it);
         }
     }
 }
