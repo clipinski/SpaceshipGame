@@ -25,6 +25,8 @@
 #ifndef GAME_ENTITY_H
 #define GAME_ENTITY_H
 
+#include <SDL.h>
+
 // Forward declaration of Game
 class Game;
 
