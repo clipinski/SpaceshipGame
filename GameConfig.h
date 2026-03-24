@@ -55,11 +55,20 @@ namespace GameConfig
     namespace PlayerShip
     {
         const double       TURN_RATE = 2.0;
-        const unsigned int BULLET_FIRE_RATE = 500;
-        const double       BULLET_VELOCITY = 2.0;
+        const unsigned int PLAYER_BULLET_FIRE_RATE = 500;
         const double       FORWARD_THRUST_AMT = .05;
         const double       REVERSE_THRUST_AMT = .05;
         const int          ENGINES_ON_ANIMATION_FRAMES = 2;
+    }
+
+    // Player Bullet Configuration
+    namespace PlayerBullet
+    {
+        const double       VELOCITY = 5.0;
+        const unsigned int LIFETIME_MS = 5000;
+        const int          SIZE_PX = 6;
+        const double       SHIP_VELOCITY_INFLUENCE = 0.25;
+        const int          PULSE_STEP_FRAMES = 3;
     }
 }
 

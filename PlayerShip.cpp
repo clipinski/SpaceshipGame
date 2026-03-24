@@ -26,6 +26,7 @@
 #include "Game.h"
 #include "GameConfig.h"
 #include "PlayerShip.h"
+#include "PlayerBullet.h"
 
 //////////////////////////////////////////////////////////////////////////
 // Ctor
@@ -35,7 +36,7 @@ PlayerShip::PlayerShip(Game* pGame, int x, int y) : GameEntity(pGame, x, y)
     // Set initial defaults
     m_velocityX = 0;
     m_velocityY = 0;
-    m_nLastBulletFireTime = 0;
+    m_nLastPlayerBulletFireTime = 0;
     m_bEnginesOn = false;
     m_nEnginesOnFrameCounter = 0;
 
@@ -116,6 +117,39 @@ void PlayerShip::HandleUserInput()
         m_velocityX -= ( GameConfig::PlayerShip::REVERSE_THRUST_AMT * cos(GetRotationAngleInRads()) );
         m_velocityY -= ( GameConfig::PlayerShip::REVERSE_THRUST_AMT * sin(GetRotationAngleInRads()) );
     }
+
+    // Check Fire Key
+    if (stateArray[GameConfig::Controls::FIRE] == 1)
+    {
+        TryFireBullet();
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////
+// TryFireBullet
+//////////////////////////////////////////////////////////////////////////
+void PlayerShip::TryFireBullet()
+{
+    const unsigned int currentTime = SDL_GetTicks();
+
+    // Limit firing speed so holding the fire key does not create a bullet each frame.
+    if ((m_nLastPlayerBulletFireTime != 0) &&
+        ((currentTime - m_nLastPlayerBulletFireTime) < GameConfig::PlayerShip::PLAYER_BULLET_FIRE_RATE))
+    {
+        return;
+    }
+
+    const int bulletSpawnX = static_cast<int>(m_X);
+    const int bulletSpawnY = static_cast<int>(m_Y);
+
+    m_pGame->AddEntityToBackLayer(new PlayerBullet(m_pGame,
+                                                   bulletSpawnX,
+                                                   bulletSpawnY,
+                                                   m_rotationAngle,
+                                                   m_velocityX,
+                                                   m_velocityY));
+
+    m_nLastPlayerBulletFireTime = currentTime;
 }
 
 //////////////////////////////////////////////////////////////////////////

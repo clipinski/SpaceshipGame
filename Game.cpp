@@ -64,7 +64,7 @@ bool Game::Initialize()
         m_pStarfield = new Starfield(this);
 
         // Create our entities
-        AddEntity(new PlayerShip(this, GetWindowWidth() / 2, GetWindowHeight() / 2));
+        AddEntityToFrontLayer(new PlayerShip(this, GetWindowWidth() / 2, GetWindowHeight() / 2));
     }
 
     return success;
@@ -168,13 +168,23 @@ int Game::GetWindowHeight()
 }
 
 //////////////////////////////////////////////////////////////////////////
-// AddEntity
+// AddEntityToFrontLayer
 //
-// Adds a new entity to the game.
+// Adds a new entity to the front render layer.
 //////////////////////////////////////////////////////////////////////////
-void Game::AddEntity(GameEntity *pEntity)
+void Game::AddEntityToFrontLayer(GameEntity *pEntity)
 {
     m_listEntities.push_back(pEntity);
+}
+
+//////////////////////////////////////////////////////////////////////////
+// AddEntityToBackLayer
+//
+// Adds a new entity to the back render layer.
+//////////////////////////////////////////////////////////////////////////
+void Game::AddEntityToBackLayer(GameEntity *pEntity)
+{
+    m_listEntities.push_front(pEntity);
 }
 
 //////////////////////////////////////////////////////////////////////////

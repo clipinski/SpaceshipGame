@@ -68,7 +68,8 @@ public:
     //************************************************************************
     int GetWindowWidth();
     int GetWindowHeight();
-    void AddEntity(GameEntity *pEntity);
+    void AddEntityToFrontLayer(GameEntity *pEntity);
+    void AddEntityToBackLayer(GameEntity *pEntity);
     int Run();
 };
 

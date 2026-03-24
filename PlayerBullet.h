@@ -22,51 +22,41 @@
 // SOFTWARE.
 ///////////////////////////////////////////////////////////////////////////////////
 
-#ifndef PLAYER_SHIP_H
-#define PLAYER_SHIP_H
+#ifndef PLAYER_BULLET_H
+#define PLAYER_BULLET_H
 
 #include <SDL.h>
 #include "GameEntity.h"
-#include "AnimImage.h"
 
 // Forward declaration of Game
 class Game;
 
 //////////////////////////////////////////////////////////////////////////////
-// PlayerShip Class
+// PlayerBullet Class
 //////////////////////////////////////////////////////////////////////////////
-class PlayerShip : public GameEntity
+class PlayerBullet : public GameEntity
 {
-protected:
-    // Ship image
-    const int SHIP_IMAGE_WIDTH = 63;
-    const int SHIP_IMAGE_HEIGHT = 63;
-    const int SHIP_IMAGE_NUM_FRAMES= 72;
-
-    // Values for specific ship movement style
+private:
+    // Explicit x/y velocity components for bullet movement.
     double m_velocityX;
     double m_velocityY;
 
-    // Control player bullet fire speed
-    unsigned int m_nLastPlayerBulletFireTime;
+    // Lifetime bookkeeping.
+    unsigned int m_spawnTimeMs;
+    unsigned int m_lifetimeMs;
 
-    // Used for displaying engines animation
-    bool m_bEnginesOn;
-    unsigned int m_nEnginesOnFrameCounter;
-
-    // Surface loaded with ship image
-    AnimImage* m_pShipImage;
-    AnimImage* m_pShipImagesThrusting[3];
-
-    // Internal Helpers
-    void HandleUserInput();
-    void TryFireBullet();
+    // Used to step the color pulse animation.
+    unsigned int m_pulseFrameCounter;
 
 public:
+    PlayerBullet(Game* pGame,
+                 int x,
+                 int y,
+                 double rotationAngleDegrees,
+                 double shipVelocityX,
+                 double shipVelocityY);
 
-    // Public Interface
-    PlayerShip(Game* pGame, int x, int y);
-    virtual ~PlayerShip() override;
+    virtual ~PlayerBullet() override = default;
     virtual void Update() override;
     virtual void Render(SDL_Surface* pSurface) override;
 };
