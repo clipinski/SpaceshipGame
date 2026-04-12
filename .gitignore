@@ -35,3 +35,6 @@ SpaceshipGame
 # VSCode
 .vscode/
 *.code-workspace
+
+# Codex
+.codex/
